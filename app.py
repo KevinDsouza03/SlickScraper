@@ -1,6 +1,6 @@
 import subprocess
 from flask import Flask, render_template, jsonify
-
+import json
 app = Flask(__name__, template_folder='templates')
 
 @app.route("/")
@@ -9,13 +9,14 @@ def hello_world():
 
 @app.route("/recentdeals")
 def recentDeals():
-    scraped_content = open('output/recent-deals.html')
+    with open('output/recentdeals.json', encoding='utf-8') as f:
+        scraped_content = json.load(f)
     return render_template("display.html", scraped_content=scraped_content)
 
 @app.route("/recentdeals/refresh")
 def refresh():
     subprocess.run(['scrapy', 'crawl', 'recentdeals'])
 
-    with open('output/recent-deals.html', 'r') as f:
-        data = f.read()
+    with open('output/recentdeals.json', encoding='utf-8') as f:
+        data = json.load(f)
     return data

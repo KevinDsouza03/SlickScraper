@@ -2,12 +2,29 @@ import requests
 import scrapy
 from pathlib import Path
 
+
+path = "E:/Slickdeals-Scraper/output/" #Enter your filepath here
 class recentdeals(scrapy.Spider):
     name = "recentdeals"
+
+    custom_settings = {
+            
+    'FEEDS': {
+        f'file:/{path}recentdeals.json': {
+            'format': 'json', 
+            'overwrite': True,
+            'encoding': 'utf8'
+            }
+        }
+    }
     def start_requests(self):
         urls = [
-            "https://slickdeals.net/deals/"
-        ] #https://slickdeals.net/deals/?page=2&sort=recent
+            "https://slickdeals.net/deals/",
+            "https://slickdeals.net/deals/?page=2&sort=recent/",
+            "https://slickdeals.net/deals/?page=3&sort=recent/",
+            "https://slickdeals.net/deals/?page=4&sort=recent/",
+            "https://slickdeals.net/deals/?page=5&sort=recent/"
+        ] 
 
         for url in urls:
             yield scrapy.Request(url=url, callback=self.parse)
@@ -16,7 +33,7 @@ class recentdeals(scrapy.Spider):
 
         for item in response.css('div.dealRow'): #array for all items on site
             yield{
-                "title": item.css('.dealTitle a::text').get(),
+                "text": item.css('.dealTitle a::text').get(),
                 "link": item.css('.dealTitle a::attr(href)').get()
             }
             #Input into json for viewing

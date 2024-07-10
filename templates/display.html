@@ -18,8 +18,8 @@
         $(document).ready(function(){
             $('#scrape-btn').click(function(){
                 $.ajax({
-                    url: '/scrape',
-                    type: 'POST',
+                    url: '/recentdeals/refresh',
+                    type: 'GET',
                     success: function(data){
                         // Assuming data is a JSON string, you can parse and display it
                         let results = JSON.parse(data);
