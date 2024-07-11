@@ -1,7 +1,9 @@
 import requests
 import scrapy
 from pathlib import Path
-
+from scrapy import signals
+from scrapy.crawler import CrawlerProcess
+from scrapy.signalmanager import dispatcher
 
 path = "E:/Slickdeals-Scraper/output/" #Enter your filepath here
 class recentdeals(scrapy.Spider):
@@ -39,3 +41,9 @@ class recentdeals(scrapy.Spider):
             #Input into json for viewing
         #Title with Price: item.css('.dealTitle a::text').get() ex: 'Amazfit Bip 3 Urban Edition Smart Watch (Black) $24.88'
         #Link: item.css('.dealTitle a::attr(href)').get() ex: '/f/17608467-amazfit-bip-3-urban-edition-smart-watch-black-24-88'
+
+def recent_deals_result():
+    dispatcher.connect(signal=signals.item_scraped)
+    crawler_process = CrawlerProcess()
+    crawler_process.crawl(recentdeals)
+    crawler_process.start()
