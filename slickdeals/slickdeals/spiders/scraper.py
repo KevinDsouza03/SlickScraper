@@ -1,5 +1,6 @@
 import requests
 import scrapy
+import subprocess
 from pathlib import Path
 from scrapy import signals
 from scrapy.crawler import CrawlerProcess
@@ -21,11 +22,11 @@ class recentdeals(scrapy.Spider):
     }
     def start_requests(self):
         urls = [
-            "https://slickdeals.net/deals/",
-            "https://slickdeals.net/deals/?page=2&sort=recent/",
-            "https://slickdeals.net/deals/?page=3&sort=recent/",
+            "https://slickdeals.net/deals/?page=5&sort=recent/",
             "https://slickdeals.net/deals/?page=4&sort=recent/",
-            "https://slickdeals.net/deals/?page=5&sort=recent/"
+            "https://slickdeals.net/deals/?page=3&sort=recent/",
+            "https://slickdeals.net/deals/?page=2&sort=recent/",
+            "https://slickdeals.net/deals/",
         ] 
 
         for url in urls:
@@ -43,7 +44,5 @@ class recentdeals(scrapy.Spider):
         #Link: item.css('.dealTitle a::attr(href)').get() ex: '/f/17608467-amazfit-bip-3-urban-edition-smart-watch-black-24-88'
 
 def recent_deals_result():
-    dispatcher.connect(signal=signals.item_scraped)
-    crawler_process = CrawlerProcess()
-    crawler_process.crawl(recentdeals)
-    crawler_process.start()
+    subprocess.run("scrapy crawl recentdeals", cwd="slickdeals\slickdeals\spiders")
+    return 
