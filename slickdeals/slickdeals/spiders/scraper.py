@@ -35,9 +35,11 @@ class recentdeals(scrapy.Spider):
     def parse(self, response):
 
         for item in response.css('div.dealRow'): #array for all items on site
+            title,price = str(item.css('.dealTitle a::text').get()).split('$', 1)
             yield{
-                "text": item.css('.dealTitle a::text').get(),
-                "link": item.css('.dealTitle a::attr(href)').get()
+                "title": title,
+                "price": price,
+                "link": "https://slickdeals.net" + item.css('.dealTitle a::attr(href)').get()
             }
             #Input into json for viewing
         #Title with Price: item.css('.dealTitle a::text').get() ex: 'Amazfit Bip 3 Urban Edition Smart Watch (Black) $24.88'

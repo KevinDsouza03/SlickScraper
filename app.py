@@ -13,9 +13,10 @@ def hello_world():
 def recentDeals():
     try:
         recent_deals_result()
-        with open('output/recentdeals.json', encoding='utf-8') as f:
-            scraped_content = json.load(f)
-        return render_template("display.html", scraped_content=scraped_content)
+        return open('output/recentdeals.json', encoding='utf-8')
+        # with open('output/recentdeals.json', encoding='utf-8') as f:
+        #     scraped_content = json.load(f)
+        # return render_template("display.html", scraped_content=scraped_content)
     except Exception as e:
         logging.error(f"Error loading scraped content: {e}")
         return jsonify({"error":"Failed to load scraped content"}), 500
