@@ -40,3 +40,5 @@ class primeday(scrapy.Spider):
 def prime_day_result():
     subprocess.run("scrapy crawl primeday", cwd="slickdeals\slickdeals\spiders")
     return 
+
+#todo: Fix fetching all items list. Currently only fetching 4. 
