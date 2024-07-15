@@ -2,9 +2,6 @@ import requests
 import scrapy
 import subprocess
 from pathlib import Path
-from scrapy import signals
-from scrapy.crawler import CrawlerProcess
-from scrapy.signalmanager import dispatcher
 
 path = "E:/Slickdeals-Scraper/output/" #Enter your filepath here
 class recentdeals(scrapy.Spider):
@@ -35,10 +32,10 @@ class recentdeals(scrapy.Spider):
     def parse(self, response):
 
         for item in response.css('div.dealRow'): #array for all items on site
-            title,price = str(item.css('.dealTitle a::text').get()).split('$', 1)
+            # title,price = str(item.css('.dealTitle a::text').get()).split('$', 1)
             yield{
-                "title": title,
-                "price": price,
+                "title": item.css('.dealTitle a::text').get(),
+                "price": item.css('div.priceCol span::text').get(),
                 "link": "https://slickdeals.net" + item.css('.dealTitle a::attr(href)').get()
             }
             #Input into json for viewing
